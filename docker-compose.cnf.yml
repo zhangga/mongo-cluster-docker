@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
     mongo-cnf-2:
         container_name: "mongo-cnf-2"
@@ -7,6 +7,11 @@ services:
             - "30102:27017"
         command: mongod --replSet cnf-serv --configsvr --port 27017 --oplogSize 16 --noprealloc --smallfiles
         restart: always
+        healthcheck:
+            test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     mongo-cnf-3:
         container_name: "mongo-cnf-3"
@@ -14,7 +19,12 @@ services:
         ports:
             - "30103:27017"
         command: mongod --replSet cnf-serv --configsvr --port 27017 --oplogSize 16 --noprealloc --smallfiles
-        restart: always 
+        restart: always
+        healthcheck:
+            test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     mongo-cnf-1:
         container_name: "mongo-cnf-1"
@@ -26,14 +36,22 @@ services:
             - mongo-cnf-2:mongo-cnf-2
             - mongo-cnf-3:mongo-cnf-3
         restart: always
+        healthcheck:
+            test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     mongo-cnf-setup:
         container_name: "mongo-cnf-setup"
         image: mongo:4.0.1
         depends_on:
-            - "mongo-cnf-1"
-            - "mongo-cnf-2"
-            - "mongo-cnf-3"
+            mongo-cnf-1:
+                condition: service_healthy
+            mongo-cnf-2:
+                condition: service_healthy
+            mongo-cnf-3:
+                condition: service_healthy
         links:
             - mongo-cnf-1:mongo-cnf-1
             - mongo-cnf-2:mongo-cnf-2

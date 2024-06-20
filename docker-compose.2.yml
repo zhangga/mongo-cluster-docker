@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
     mongo-2-2:
         container_name: "mongo-2-2"
@@ -7,6 +7,11 @@ services:
             - "30022:27017"
         command: mongod --replSet rs2 --shardsvr --port 27017  --oplogSize 16 --noprealloc --smallfiles
         restart: always
+        healthcheck:
+            test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     mongo-2-3:
         container_name: "mongo-2-3"
@@ -14,7 +19,12 @@ services:
         ports:
             - "30023:27017"
         command: mongod --replSet rs2 --shardsvr --port 27017  --oplogSize 16 --noprealloc --smallfiles
-        restart: always 
+        restart: always
+        healthcheck:
+            test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     mongo-2-1:
         container_name: "mongo-2-1"
@@ -26,14 +36,22 @@ services:
             - mongo-2-2:mongo-2-2
             - mongo-2-3:mongo-2-3
         restart: always
+        healthcheck:
+            test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     mongo-rs2-setup:
         container_name: "mongo-rs2-setup"
         image: mongo:4.0.1
         depends_on:
-            - "mongo-2-1"
-            - "mongo-2-2"
-            - "mongo-2-3"
+            mongo-2-1:
+                condition: service_healthy
+            mongo-2-2:
+                condition: service_healthy
+            mongo-2-3:
+                condition: service_healthy
         links:
             - mongo-2-1:mongo-2-1
             - mongo-2-2:mongo-2-2

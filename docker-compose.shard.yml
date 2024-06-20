@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
     mongo-router:
         container_name: "mongo-router"
@@ -19,7 +19,13 @@ services:
             - mongo-2-1:mongo-2-1
             - mongo-2-2:mongo-2-2
             - mongo-2-3:mongo-2-3
-        command: mongos --configdb cnf-serv/mongo-cnf-1:27017,mongo-cnf-2:27017,mongo-cnf-3:27017 --port 27017 --bind_ip 0.0.0.0
+        volumes:
+            - ./scripts:/scripts
+        environment:
+            - MONGORS1=mongo-1-1
+            - MONGORS2=mongo-2-1
+            - MONGORSCNF=mongo-cnf-1
+        entrypoint: [ "/scripts/start-router.sh" ]
         restart: always
 
     mongo-shard-setup:
