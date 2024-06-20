@@ -7,6 +7,9 @@ services:
             - "30012:27017"
         command: mongod --replSet rs1 --shardsvr --port 27017  --oplogSize 16 --noprealloc --smallfiles
         restart: always
+        networks:
+            my_network:
+                ipv4_address: 172.22.0.12
         healthcheck:
             test: ["CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')"]
             interval: 10s
@@ -20,6 +23,9 @@ services:
             - "30013:27017"
         command: mongod --replSet rs1 --shardsvr --port 27017  --oplogSize 16 --noprealloc --smallfiles
         restart: always
+        networks:
+            my_network:
+                ipv4_address: 172.22.0.13
         healthcheck:
             test: ["CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')"]
             interval: 10s
@@ -36,6 +42,9 @@ services:
             - mongo-1-2:mongo-1-2
             - mongo-1-3:mongo-1-3
         restart: always
+        networks:
+            my_network:
+                ipv4_address: 172.22.0.11
         healthcheck:
             test: ["CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')"]
             interval: 10s

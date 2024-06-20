@@ -7,6 +7,9 @@ services:
             - "30102:27017"
         command: mongod --replSet cnf-serv --configsvr --port 27017 --oplogSize 16 --noprealloc --smallfiles
         restart: always
+        networks:
+            my_network:
+                ipv4_address: 172.22.0.112
         healthcheck:
             test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s
@@ -20,6 +23,9 @@ services:
             - "30103:27017"
         command: mongod --replSet cnf-serv --configsvr --port 27017 --oplogSize 16 --noprealloc --smallfiles
         restart: always
+        networks:
+            my_network:
+                ipv4_address: 172.22.0.113
         healthcheck:
             test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s
@@ -36,6 +42,9 @@ services:
             - mongo-cnf-2:mongo-cnf-2
             - mongo-cnf-3:mongo-cnf-3
         restart: always
+        networks:
+            my_network:
+                ipv4_address: 172.22.0.111
         healthcheck:
             test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s

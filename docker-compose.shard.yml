@@ -27,6 +27,9 @@ services:
             - MONGORSCNF=mongo-cnf-1
         entrypoint: [ "bash", "/scripts/start-router.sh" ]
         restart: always
+        networks:
+            my_network:
+                ipv4_address: 172.22.0.1
 
     mongo-shard-setup:
         container_name: "mongo-shard-setup"
