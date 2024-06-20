@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 services:
     mongo-cnf-2:
         container_name: "mongo-cnf-2"
@@ -46,12 +46,9 @@ services:
         container_name: "mongo-cnf-setup"
         image: mongo:4.0.1
         depends_on:
-            mongo-cnf-1:
-                condition: service_healthy
-            mongo-cnf-2:
-                condition: service_healthy
-            mongo-cnf-3:
-                condition: service_healthy
+            - "mongo-cnf-1"
+            - "mongo-cnf-2"
+            - "mongo-cnf-3"
         links:
             - mongo-cnf-1:mongo-cnf-1
             - mongo-cnf-2:mongo-cnf-2
