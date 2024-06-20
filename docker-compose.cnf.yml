@@ -9,7 +9,8 @@ services:
         restart: always
         networks:
             my_network:
-                ipv4_address: 172.22.0.112
+                aliases:
+                    - mongo-cnf-2
         healthcheck:
             test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s
@@ -25,7 +26,8 @@ services:
         restart: always
         networks:
             my_network:
-                ipv4_address: 172.22.0.113
+                aliases:
+                    - mongo-cnf-3
         healthcheck:
             test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s
@@ -44,7 +46,8 @@ services:
         restart: always
         networks:
             my_network:
-                ipv4_address: 172.22.0.111
+                aliases:
+                    - mongo-cnf-1
         healthcheck:
             test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s
@@ -71,3 +74,7 @@ services:
             - RS=cnf-serv
             - PORT=27017
         entrypoint: [ "/scripts/setup-cnf.sh" ]
+
+networks:
+    my_network:
+        driver: bridge

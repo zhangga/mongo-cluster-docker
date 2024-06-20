@@ -20,7 +20,7 @@ check_replica_set() {
 
 # 等待副本集初始化完成
 echo "Waiting for replica set to be ready..."
-for node in ${rs1} ${rs2} ${rs3}; do
+for node in ${MONGORS1} ${MONGORS2} ${MONGORSCNF}; do
     until check_replica_set ${node} ${port}; do
         echo "Replica set not ready yet..."
         sleep 2

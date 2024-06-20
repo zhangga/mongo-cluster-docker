@@ -25,8 +25,8 @@ done
 echo "Started.."
 
 echo init-shard.sh time now: `date +"%T" `
-mongo --host ${mongodb1}:${port} <<EOF
-   sh.addShard( "${RS1}/${mongodb11}:${PORT1},${mongodb12}:${PORT2},${mongodb13}:${PORT3}" );
-   sh.addShard( "${RS2}/${mongodb21}:${PORT1},${mongodb22}:${PORT2},${mongodb23}:${PORT3}" );
+mongo --host ${MONGOS}:${port} <<EOF
+   sh.addShard( "${RS1}/${MONGO11}:${PORT1},${MONGO12}:${PORT2},${MONGO13}:${PORT3}" );
+   sh.addShard( "${RS2}/${MONGO21}:${PORT1},${MONGO22}:${PORT2},${MONGO23}:${PORT3}" );
    sh.status();
 EOF

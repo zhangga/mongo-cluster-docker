@@ -29,7 +29,8 @@ services:
         restart: always
         networks:
             my_network:
-                ipv4_address: 172.22.0.1
+                aliases:
+                    - mongo-router
 
     mongo-shard-setup:
         container_name: "mongo-shard-setup"
@@ -56,3 +57,7 @@ services:
             - PORT3=27017
         entrypoint: [ "/scripts/init-shard.sh" ]
         restart: on-failure:20
+
+networks:
+    my_network:
+        driver: bridge

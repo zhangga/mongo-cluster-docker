@@ -9,7 +9,8 @@ services:
         restart: always
         networks:
             my_network:
-                ipv4_address: 172.22.0.22
+                aliases:
+                    - mongo-2-2
         healthcheck:
             test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s
@@ -25,7 +26,8 @@ services:
         restart: always
         networks:
             my_network:
-                ipv4_address: 172.22.0.23
+                aliases:
+                    - mongo-2-3
         healthcheck:
             test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s
@@ -44,7 +46,8 @@ services:
         restart: always
         networks:
             my_network:
-                ipv4_address: 172.22.0.33
+                aliases:
+                    - mongo-2-1
         healthcheck:
             test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s
@@ -70,5 +73,9 @@ services:
             - MONGO3=mongo-2-3
             - RS=rs2
         entrypoint: [ "/scripts/setup.sh" ]
+
+networks:
+    my_network:
+        driver: bridge
 
         
