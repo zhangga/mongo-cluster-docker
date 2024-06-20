@@ -25,7 +25,7 @@ services:
             - MONGORS1=mongo-1-1
             - MONGORS2=mongo-2-1
             - MONGORSCNF=mongo-cnf-1
-        entrypoint: [ "/scripts/start-router.sh" ]
+        entrypoint: [ "bash", "/scripts/start-router.sh" ]
         restart: always
 
     mongo-shard-setup:
