@@ -7,7 +7,7 @@ mongodb3=`getent hosts ${MONGO3} | awk '{ print $1 }'`
 port=${PORT:-27017}
 
 echo "Waiting for startup.."
-for node in $${MONGO1} ${MONGO2} ${MONGO3}; do
+for node in ${MONGO1} ${MONGO2} ${MONGO3}; do
     until mongo --host ${node}:${port} --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' &>/dev/null; do
         echo "mongodb not ready yet..."
         sleep 1
@@ -32,10 +32,9 @@ mongo --host ${MONGO1}:${port} <<EOF
             },
             {
                 "_id": 2,
-                "host": "${MONGO3}}:${port}"
+                "host": "${MONGO3}:${port}"
             }
         ]
     };
     rs.initiate(cfg, { force: true });
-    rs.reconfig(cfg, { force: true });
 EOF
