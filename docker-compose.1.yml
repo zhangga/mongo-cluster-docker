@@ -73,6 +73,10 @@ services:
             - MONGO3=mongo-1-3
             - RS=rs1
         entrypoint: [ "/scripts/setup.sh" ]
+        networks:
+            my_network:
+                aliases:
+                    - mongo-rs1-setup
 
 networks:
     my_network:

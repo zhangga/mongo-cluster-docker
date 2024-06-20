@@ -74,6 +74,10 @@ services:
             - RS=cnf-serv
             - PORT=27017
         entrypoint: [ "/scripts/setup-cnf.sh" ]
+        networks:
+            my_network:
+                aliases:
+                    - mongo-cnf-setup
 
 networks:
     my_network:
