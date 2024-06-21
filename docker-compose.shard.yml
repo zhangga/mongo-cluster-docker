@@ -32,12 +32,10 @@ services:
                 aliases:
                     - mongo-router
         healthcheck:
-            test: >
-                bash -c
-                'mongo --eval "db.runCommand({connectionStatus: 1})" | grep -q "ok : 1"'
+            test: [ "CMD", "mongo", "--quiet", "--eval", "db.adminCommand('ping')" ]
             interval: 10s
             timeout: 5s
-            retries: 5
+            retries: 10
 
     mongo-shard-setup:
         container_name: "mongo-shard-setup"
