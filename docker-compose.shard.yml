@@ -31,6 +31,13 @@ services:
             my_network:
                 aliases:
                     - mongo-router
+        healthcheck:
+            test: >
+                bash -c
+                'mongo --eval "db.runCommand({connectionStatus: 1})" | grep -q "ok : 1"'
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     mongo-shard-setup:
         container_name: "mongo-shard-setup"
